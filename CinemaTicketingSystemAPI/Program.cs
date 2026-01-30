@@ -14,15 +14,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options => {
     options.Filters.Add<GlobalExceptionFilter>();
 });
+//Base
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddMemoryCache(); 
+
 builder.Services.AddControllers(options => 
 {
     options.Filters.Add<GlobalExceptionFilter>(); 
 });
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+
 builder.Services.AddControllers();
 var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? "super_secret_key_1234567890123456");
 
